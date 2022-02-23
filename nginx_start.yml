@@ -1,0 +1,15 @@
+- hosts: master
+  become: yes
+  gather_facts: false
+  tasks:
+     - name: Copy deployment file
+       copy:
+         src: ./nginx.yml
+         dest: /home/ubuntu/nginx.yml
+         remote_src: no
+     - name: start nginx
+       become: yes
+       become_user: ubuntu
+       shell: kubectl apply -f /home/ubuntu/nginx.yml
+       args:
+         chdir: /home/ubuntu
